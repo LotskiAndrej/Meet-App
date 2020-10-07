@@ -14,6 +14,7 @@ class MainTableCell: UITableViewCell {
     @IBOutlet var dateTimeLabel: UILabel!
     @IBOutlet var createdByLabel: UILabel!
     @IBOutlet var cellTrash: UIImageView!
+    @IBOutlet var goingButton: UIButton!
 }
 
 class MainTableViewController: UITableViewController {
@@ -40,7 +41,7 @@ class MainTableViewController: UITableViewController {
         spinnerMethods()
         loadEvents()
         
-        tableView.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.refreshControl?.addTarget(self, action: #selector(loadEvents), for: .valueChanged)
     }
     
     func spinnerMethods() {
@@ -49,41 +50,48 @@ class MainTableViewController: UITableViewController {
         spinnerView.startAnimating()
     }
     
-    @objc func refresh() {
-        loadEvents()
-    }
-    
     @objc func addEvent() {
         if let vc = self.storyboard?.instantiateViewController(identifier: "Add") as? EventViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .alert)
+    @IBAction func goingButtonPressed(_ sender: UIButton) {
+        var superview = sender.superview
+        while let view = superview, !(view is UITableViewCell) {superview = view.superview}
+        guard let cell = superview as? UITableViewCell else {return}
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        let fullIndexPath = indexPath.row
         
-        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { (action) in
-            do {
-                try Auth.auth().signOut()
-                if let vc = self.storyboard?.instantiateViewController(identifier: "Login") as? WelcomeViewController {
-                    
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            } catch let signOutError as NSError {
-                print("Error signing out: %@", signOutError)
+        var updatedGoing = events[fullIndexPath].going
+        if let currentUser = Auth.auth().currentUser?.email {
+            if !updatedGoing.contains(currentUser) {
+                updatedGoing.append(currentUser)
+            } else {
+                updatedGoing.remove(at: updatedGoing.firstIndex(of: currentUser)!)
+            }
+            updateGoingsInDB(updatedGoing, fullIndexPath)
+        }
+        tableView.reloadData()
+    }
+    
+    fileprivate func updateGoingsInDB(_ updatedGoing: [String], _ indexPathWithRow: Int) {
+        db.collection("events").document(events[indexPathWithRow].docID).updateData([
+            "going": updatedGoing
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                self.events[indexPathWithRow].going = updatedGoing
+                self.tableView.reloadData()
             }
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alert.addAction(cancelAction)
-        alert.addAction(logOutAction)
-        
-        present(alert, animated: true, completion: nil)
     }
     
     //MARK: - loadEvents() start
-    func loadEvents() {
-        db.collection("events").order(by: "date", descending: true).addSnapshotListener { (querySnapshot, error) in
+    @objc func loadEvents() {
+        db.collection("events").order(by: "dateCreated", descending: true).addSnapshotListener { (querySnapshot, error) in
             self.events = []
             
             if let e = error {
@@ -109,10 +117,9 @@ class MainTableViewController: UITableViewController {
                             self.events.append(newEvent)
                             
                             DispatchQueue.main.async {
+                                self.tableView.reloadData()
                                 self.spinnerView.stopAnimating()
                                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addEvent))
-                                
-                                self.tableView.reloadData()
                                 self.refreshControl?.endRefreshing()
                             }
                         }
@@ -122,11 +129,34 @@ class MainTableViewController: UITableViewController {
         }
     }
     //MARK: - loadEvents() end
+    
+    @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .alert)
+        
+        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { (action) in
+            do {
+                try Auth.auth().signOut()
+                if let vc = self.storyboard?.instantiateViewController(identifier: "Login") as? WelcomeViewController {
+                    
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(logOutAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 //MARK: - TableView Delegate and DataSource Methods
 
 extension MainTableViewController {
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.count
     }
@@ -134,13 +164,27 @@ extension MainTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Event", for: indexPath) as! MainTableCell
         let event = events[indexPath.row]
+        
         cell.locationLabel.text = event.location
         cell.dateTimeLabel.text = "\(event.date) at \(event.time)"
-        cell.createdByLabel.text = "Created by: \(event.sender)"
         cell.cellTrash.image = UIImage(systemName: "trash")
         
-        if event.sender != Auth.auth().currentUser?.email {
-            cell.cellTrash.isHidden = true
+        if let currentUser = Auth.auth().currentUser?.email {
+            if event.sender == currentUser {
+                cell.createdByLabel.text = "Created by: You"
+                cell.cellTrash.isHidden = false
+            } else {
+                cell.createdByLabel.text = "Created by: \(event.sender)"
+                cell.cellTrash.isHidden = true
+            }
+            
+            if !event.going.contains(currentUser) {
+                cell.goingButton.setTitle("Going", for: .normal)
+                cell.goingButton.setTitleColor(.systemBlue, for: .normal)
+            } else {
+                cell.goingButton.setTitle("Not Going", for: .normal)
+                cell.goingButton.setTitleColor(.systemRed, for: .normal)
+            }
         }
         
         return cell

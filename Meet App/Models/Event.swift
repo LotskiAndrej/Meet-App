@@ -12,6 +12,7 @@ struct Event {
     var location: String = ""
     var time: String = ""
     var date: String = ""
+    var defaultDate: String = ""
     var sender: String = ""
     var docID: String = ""
     var dateCreated: Int = 0

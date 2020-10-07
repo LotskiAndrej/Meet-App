@@ -67,7 +67,7 @@ class UpdateEventViewController: UIViewController {
         }
         datePicker.minimumDate = Date()
         
-//        datePicker.setDate(Date(), animated: true)
+        datePicker.setDate(Date(), animated: true)
     }
 
     func getPickerInfo(for info: String) -> String? {
