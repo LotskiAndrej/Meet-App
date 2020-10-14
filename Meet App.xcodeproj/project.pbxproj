@@ -21,6 +21,7 @@
 		B8C3E6F1250BE9A700FB8516 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3E6F0250BE9A700FB8516 /* RegisterViewController.swift */; };
 		B8C3E6F3250BEB6500FB8516 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3E6F2250BEB6500FB8516 /* MainTableViewController.swift */; };
 		B8DB1374250BED8A000BAD72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8DB1373250BED8A000BAD72 /* GoogleService-Info.plist */; };
+		B8EEDCC325376B3D0097EE3E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EEDCC225376B3D0097EE3E /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		B8C3E6F0250BE9A700FB8516 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		B8C3E6F2250BEB6500FB8516 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		B8DB1373250BED8A000BAD72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B8EEDCC225376B3D0097EE3E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C8C332AA3AAE7621E3F0CD0B /* Pods-Meet App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meet App.release.xcconfig"; path = "Target Support Files/Pods-Meet App/Pods-Meet App.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 				B8C3E6F2250BEB6500FB8516 /* MainTableViewController.swift */,
 				B857C2CA250D3D820080F678 /* DetailViewController.swift */,
 				B8686761250D9258005A0254 /* UpdateEventViewController.swift */,
+				B8EEDCC225376B3D0097EE3E /* ProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 			files = (
 				B857C2CB250D3D820080F678 /* DetailViewController.swift in Sources */,
 				B857C2C9250D30640080F678 /* Event.swift in Sources */,
+				B8EEDCC325376B3D0097EE3E /* ProfileViewController.swift in Sources */,
 				B8C3E6EF250B7B4600FB8516 /* WelcomeViewController.swift in Sources */,
 				B8686762250D9258005A0254 /* UpdateEventViewController.swift in Sources */,
 				B8445D89250B784E00873BC5 /* AppDelegate.swift in Sources */,

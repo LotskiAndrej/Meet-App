@@ -170,6 +170,59 @@
             </objects>
             <point key="canvasLocation" x="319" y="366"/>
         </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="nlJ-H6-nsV">
+            <objects>
+                <viewController storyboardIdentifier="Profile" id="JiL-FJ-7OR" customClass="ProfileViewController" customModule="Meet_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sOh-hd-fve">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="YIr-PI-iwp">
+                                <rect key="frame" x="0.0" y="173.5" width="375" height="320"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Bfw-oX-iBf">
+                                        <rect key="frame" x="87.5" y="0.5" width="200" height="199"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="5w8-Ul-Eoj"/>
+                                            <constraint firstAttribute="width" constant="200" id="8PO-sZ-uly"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Surname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOB-SP-X0P">
+                                        <rect key="frame" x="94.5" y="230" width="186.5" height="33.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JdK-Au-PdQ">
+                                        <rect key="frame" x="162" y="293.5" width="51.5" height="26.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WA5-BF-AiB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="WA5-BF-AiB" firstAttribute="trailing" secondItem="YIr-PI-iwp" secondAttribute="trailing" id="7GA-Z0-Fv3"/>
+                            <constraint firstItem="YIr-PI-iwp" firstAttribute="leading" secondItem="WA5-BF-AiB" secondAttribute="leading" id="DLd-pv-ptx"/>
+                            <constraint firstItem="YIr-PI-iwp" firstAttribute="centerX" secondItem="sOh-hd-fve" secondAttribute="centerX" id="KwT-km-oF6"/>
+                            <constraint firstItem="YIr-PI-iwp" firstAttribute="centerY" secondItem="sOh-hd-fve" secondAttribute="centerY" id="Vi5-ck-uTU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="96X-KS-U7D"/>
+                    <connections>
+                        <outlet property="emailLabel" destination="JdK-Au-PdQ" id="LfI-jP-hbT"/>
+                        <outlet property="imageView" destination="Bfw-oX-iBf" id="LYM-zp-lOZ"/>
+                        <outlet property="nameLabel" destination="cOB-SP-X0P" id="HEq-MQ-Nw0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l6c-PD-y0S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1206" y="-1202"/>
+        </scene>
         <!--Meet App-->
         <scene sceneID="wRK-10-8HY">
             <objects>
@@ -261,9 +314,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Meet App" largeTitleDisplayMode="always" id="Hkp-iN-Shk">
-                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="zyy-oE-4j9">
+                        <barButtonItem key="leftBarButtonItem" image="gearshape" catalog="system" id="zyy-oE-4j9">
                             <connections>
-                                <action selector="logOutPressed:" destination="bsQ-Ep-Uim" id="bm4-d8-Lpn"/>
+                                <action selector="settingsPressed:" destination="bsQ-Ep-Uim" id="w40-p9-NFP"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4cP-pZ-zlt"/>
@@ -276,6 +329,7 @@
                         <segue destination="oxd-ys-u56" kind="show" identifier="MainToDetail" id="hl1-VX-nVB"/>
                         <segue destination="85W-hb-42M" kind="show" identifier="MainToLogin" id="lVG-en-suh"/>
                         <segue destination="ktH-vg-8oQ" kind="show" id="jCC-68-z5Y"/>
+                        <segue destination="JiL-FJ-7OR" kind="show" id="BF9-kb-xOq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cac-mr-kbk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -512,6 +566,8 @@
     </scenes>
     <color key="tintColor" systemColor="systemBlueColor"/>
     <resources>
+        <image name="gearshape" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

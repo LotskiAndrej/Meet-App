@@ -130,10 +130,10 @@ class MainTableViewController: UITableViewController {
     }
     //MARK: - loadEvents() end
     
-    @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .alert)
+    @IBAction func settingsPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "", message: "Settings", preferredStyle: .actionSheet)
         
-        let logOutAction = UIAlertAction(title: "Log Out", style: .destructive) { (action) in
+        let actionLogOut = UIAlertAction(title: "Log Out", style: .destructive) { (action) in
             do {
                 try Auth.auth().signOut()
                 if let vc = self.storyboard?.instantiateViewController(identifier: "Login") as? WelcomeViewController {
@@ -144,10 +144,16 @@ class MainTableViewController: UITableViewController {
                 print("Error signing out: %@", signOutError)
             }
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        alert.addAction(cancelAction)
-        alert.addAction(logOutAction)
+        let actionProfile = UIAlertAction(title: "Profile", style: .default) { (action) in
+            if let vc = self.storyboard?.instantiateViewController(identifier: "Profile") as? ProfileViewController {
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        
+        alert.addAction(actionProfile)
+        alert.addAction(actionLogOut)
         
         present(alert, animated: true, completion: nil)
     }
